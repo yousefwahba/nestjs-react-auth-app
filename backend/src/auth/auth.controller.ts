@@ -7,6 +7,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import { SignupDto } from '../users/dto/signup.dto';
@@ -14,6 +15,8 @@ import { SigninDto } from '../users/dto/signin.dto';
 
 @ApiTags('auth')
 @Controller('auth')
+// Apply strict rate limiting to all auth endpoints by default
+@Throttle({ default: { limit: 5, ttl: 60000 } }) // 5 requests per minute
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
@@ -66,6 +69,7 @@ export class AuthController {
 
   @Post('signin')
   @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { limit: 3, ttl: 60000 } }) // Stricter: 3 login attempts per minute
   @ApiOperation({
     summary: 'Sign in to existing account',
     description:

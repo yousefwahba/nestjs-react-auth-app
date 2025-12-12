@@ -10,6 +10,7 @@ import * as bcrypt from 'bcrypt';
 import { User, UserDocument } from './schemas/user.schema';
 import { SignupDto } from './dto/signup.dto';
 import { SigninDto } from './dto/signin.dto';
+import { ensureString } from '../common/pipes';
 
 @Injectable()
 export class UsersService {
@@ -49,7 +50,9 @@ export class UsersService {
   }
 
   async findByEmail(email: string): Promise<UserDocument | null> {
-    return this.userModel.findOne({ email: email.toLowerCase() }).exec();
+    // Defense-in-depth: ensure email is a string to prevent NoSQL injection
+    const sanitizedEmail = ensureString(email).toLowerCase();
+    return this.userModel.findOne({ email: sanitizedEmail }).exec();
   }
 
   async validateUser(signinDto: SigninDto): Promise<UserDocument> {
