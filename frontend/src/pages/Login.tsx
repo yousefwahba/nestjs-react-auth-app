@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { validateLoginForm } from '../utils/validation';
@@ -33,8 +33,9 @@ export default function Login() {
     try {
       await login(email, password);
       navigate('/');
-    } catch (err: any) {
-      const errorMessage = err.response?.data?.message;
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string | string[] } } };
+      const errorMessage = error.response?.data?.message;
       if (Array.isArray(errorMessage)) {
         setApiError(errorMessage.join(', '));
       } else {

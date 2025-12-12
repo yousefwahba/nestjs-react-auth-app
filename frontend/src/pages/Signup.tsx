@@ -34,8 +34,9 @@ export default function Signup() {
     try {
       await signup(email, name, password);
       navigate('/');
-    } catch (err: any) {
-      const errorMessage = err.response?.data?.message;
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string | string[] } } };
+      const errorMessage = error.response?.data?.message;
       if (Array.isArray(errorMessage)) {
         setApiError(errorMessage.join(', '));
       } else {
