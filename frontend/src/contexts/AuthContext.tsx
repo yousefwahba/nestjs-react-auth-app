@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import api from '../lib/axios';
 
 interface User {
@@ -18,6 +18,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -53,7 +54,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         headers: { Authorization: `Bearer ${authToken}` },
       });
       setUser(response.data);
-    } catch (error) {
+    } catch {
       // Token invalid, clear it
       localStorage.removeItem('token');
       setToken(null);
