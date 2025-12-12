@@ -2,6 +2,21 @@
 
 Authentication system built with NestJS, React, and MongoDB.
 
+## Screenshots
+
+<p align="center">
+  <img src="frontend/src/assets/frontend.png" alt="Frontend" width="100%" style="max-width: 800px; border-radius: 8px; margin-bottom: 16px;" />
+</p>
+
+<p align="center">
+  <img src="frontend/src/assets/api.png" alt="API Documentation" width="100%" style="max-width: 800px; border-radius: 8px; margin-bottom: 16px;" />
+</p>
+
+<p align="center">
+  <img src="frontend/src/assets/ci.png" alt="CI/CD Pipeline" width="100%" style="max-width: 800px; border-radius: 8px;" />
+</p>
+
+
 ## Tech Stack
 
 - **Backend:** NestJS, MongoDB, Passport JWT, Swagger
