@@ -10,24 +10,23 @@ jest.mock('bcrypt');
 describe('UsersService', () => {
   let service: UsersService;
 
-  const mockUserModel = {
-    findOne: jest.fn(),
-    constructor: jest.fn(),
-  };
-
-  // Create a mock constructor function
-  const MockUserModelConstructor = jest.fn().mockImplementation((data) => ({
-    ...data,
-    save: jest.fn().mockResolvedValue({
-      _id: 'new-user-id',
+  // Create a mock constructor function with proper typing
+  const MockUserModelConstructor: jest.Mock & {
+    findOne: jest.Mock;
+  } = Object.assign(
+    jest.fn().mockImplementation((data: Record<string, unknown>) => ({
       ...data,
-    }),
-  }));
-
-  // Add static methods to the constructor
-  MockUserModelConstructor.findOne = jest.fn().mockReturnValue({
-    exec: jest.fn(),
-  });
+      save: jest.fn().mockResolvedValue({
+        _id: 'new-user-id',
+        ...data,
+      }),
+    })),
+    {
+      findOne: jest.fn().mockReturnValue({
+        exec: jest.fn(),
+      }),
+    },
+  );
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -182,4 +181,3 @@ describe('UsersService', () => {
     });
   });
 });
-

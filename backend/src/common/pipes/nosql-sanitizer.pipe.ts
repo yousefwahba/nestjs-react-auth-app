@@ -47,7 +47,9 @@ export class NoSqlSanitizerPipe implements PipeTransform {
     return value;
   }
 
-  private sanitizeObject(obj: Record<string, unknown>): Record<string, unknown> {
+  private sanitizeObject(
+    obj: Record<string, unknown>,
+  ): Record<string, unknown> {
     const sanitized: Record<string, unknown> = {};
 
     for (const key of Object.keys(obj)) {
@@ -104,7 +106,10 @@ export function sanitizeMongoQuery<T>(value: T): T {
     // Check for injection attempts in object values
     const obj = value as Record<string, unknown>;
     for (const key of Object.keys(obj)) {
-      if (key.startsWith('$') || ['__proto__', 'constructor', 'prototype'].includes(key)) {
+      if (
+        key.startsWith('$') ||
+        ['__proto__', 'constructor', 'prototype'].includes(key)
+      ) {
         throw new BadRequestException('Invalid query parameter detected');
       }
     }
@@ -122,4 +127,3 @@ export function ensureString(value: unknown): string {
   }
   return value.replace(/\0/g, '');
 }
-
