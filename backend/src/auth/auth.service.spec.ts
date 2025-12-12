@@ -5,7 +5,6 @@ import { UserDocument } from '../users/schemas/user.schema';
 
 describe('AuthService', () => {
   let service: AuthService;
-  let jwtService: JwtService;
 
   const mockJwtService = {
     sign: jest.fn().mockReturnValue('mock-jwt-token'),
@@ -23,7 +22,6 @@ describe('AuthService', () => {
     }).compile();
 
     service = module.get<AuthService>(AuthService);
-    jwtService = module.get<JwtService>(JwtService);
   });
 
   afterEach(() => {
@@ -65,7 +63,7 @@ describe('AuthService', () => {
 
       service.login(mockUser);
 
-      expect(jwtService.sign).toHaveBeenCalledWith({
+      expect(mockJwtService.sign).toHaveBeenCalledWith({
         email: 'test@example.com',
         sub: 'user-id-123',
         name: 'Test User',
@@ -97,4 +95,3 @@ describe('AuthService', () => {
     });
   });
 });
-
